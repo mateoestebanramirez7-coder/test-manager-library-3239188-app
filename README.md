@@ -6,7 +6,7 @@ Frontend en React de *Manager Library*. Prueba técnica SDD · Ficha ADSO 323918
 
 Pantallas de operación para el administrador y el bibliotecario (tarea T-22). Consume el contrato de `api-contract.md` tal cual: no cambia nombres de campos ni rutas.
 
-La arquitectura del frontend (pantallas, enrutador con rutas protegidas, cliente HTTP único y manejo central de errores) está en la sección 9 de [`architecture.md`](https://github.com/Mateo476/test-manager-library-3239188-api/blob/main/architecture.md) del repo `api`.
+La arquitectura del frontend (pantallas, enrutador con rutas protegidas, cliente HTTP único y manejo central de errores) está en la sección 9 de [`architecture.md`](https://github.com/mateoestebanramirez7-coder/test-manager-library-3239188-api/blob/main/architecture.md) del repo `api`.
 
 ## Convención de idioma (artículo XI)
 
