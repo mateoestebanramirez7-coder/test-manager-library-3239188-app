@@ -1,50 +1,56 @@
 # test-manager-library-3239188-app
 
-> **Prueba técnica · Ficha ADSO 3239188**
-> Horario: **jueves 5 de noviembre de 2026, de 7:00 p. m. a 11:00 p. m.** (hora Colombia). Entrega a las **11:00 p. m.**
+Frontend en React de *Manager Library*. Prueba técnica SDD · Ficha ADSO 3239188.
 
-Este repositorio es el **frontend** de *Manager Library*, en **React**. **Empieza vacío a propósito**: se construye en el fork de cada aprendiz.
+## Papel en el spec
 
-## Instrucciones
+Pantallas de operación para el administrador y el bibliotecario (tarea T-22). Consume el contrato de `api-contract.md` tal cual: no cambia nombres de campos ni rutas.
 
-Cada aprendiz debe **crear el fork** de los seis repositorios del proyecto y **resolver el proyecto
-con el spec planteado**.
+## Convención de idioma (artículo XI)
 
-1. Hacer fork, a su cuenta de GitHub, de cada repositorio de la tabla del final.
-2. Leer el spec en [`test-manager-library-3239188-docs`](https://github.com/code-sena/test-manager-library-3239188-docs).
-   Se entrega en dos versiones: `spec-python/` y `spec-.net/`.
-3. Desarrollar en los forks.
+Código, componentes y variables en inglés. Textos visibles al usuario en español.
 
-## El reto se desarrolla con React y PHP (Laravel)
+## Pantallas previstas
 
-El spec está escrito para Python y para .NET, pero el reto **no** se hace en esos lenguajes:
+| Pantalla | Rol | Endpoints que consume | Historia |
+|---|---|---|---|
+| Login | todos | `POST /auth/login` | HU-01 |
+| Catálogo y búsqueda | autenticado | `GET /books`, `GET /categories` | HU-04 |
+| Gestión de libros | admin | `POST/PUT/DELETE /books`, portada | HU-03 |
+| Socios | admin, bibliotecario | `GET/POST /members` | HU-05 |
+| Registrar préstamo | admin, bibliotecario | `POST /loans` | HU-06 |
+| Devolver | admin, bibliotecario | `POST /loans/{loan_id}/items/{item_id}/return` | HU-07 |
+| Préstamos | admin, bibliotecario | `GET /loans`, `GET /loans/{id}` | HU-08 |
+| Vencidos | admin, bibliotecario | `GET /loans/overdue` | HU-09 |
+| Reporte de más prestados | admin | `GET /reports/most-borrowed` | HU-10 |
 
-| Capa | Tecnología del reto |
+## Manejo de errores
+
+El cuerpo de error es único (`code`, `message`, `details`). La app muestra el `message` en español y reacciona según el estado:
+
+| Estado | Comportamiento |
 |---|---|
-| Frontend | React |
-| Backend | PHP con Laravel |
+| 401 | Cierra sesión y vuelve al login |
+| 403 | Aviso de permisos insuficientes; el menú oculta lo que el rol no puede usar |
+| 409 | Aviso del conflicto (sin ejemplares, ya devuelto, socio con vencidos, libro con préstamos abiertos) |
+| 422 | Marca los campos indicados en `details` |
 
-Lo que el spec define sobre el negocio —historias, criterios de aceptación, reglas, contrato de la
-API, modelo de datos— se respeta. Lo que define sobre la tecnología se traduce a React y Laravel.
+## Reglas que la interfaz respeta
 
-## La prueba no consiste en escribir el código
+- Un préstamo tiene de 1 a 3 libros, sin repetir.
+- El reporte puede mostrar el mismo libro en más de una fila (categoría congelada distinta); es correcto.
+- Un libro dado de baja deja de aparecer en el catálogo.
+- El token se envía como `Authorization: Bearer`; no se guardan datos personales en él.
 
-El propósito principal es ver la **capacidad de desempeño con SDD** (*Spec-Driven Development*,
-desarrollo guiado por especificación): cómo se lee, se interpreta y se aplica una especificación
-para llevarla a un stack distinto. El código es el medio, no el fin.
+## Recorrido de punta a punta
 
-## Entrega
+Login → buscar libro → registrar préstamo → devolver una línea → ver el reporte.
 
-Cuenta lo que quede **subido a los forks antes de las 11:00 p. m.** Lo que llegue después no se revisa.
-No hay prórroga: suban avances parciales con commits pequeños durante la prueba.
+## Estado
 
-## Los seis repositorios
-
-| Repositorio | Qué va ahí |
+| Elemento | Estado |
 |---|---|
-| [`test-manager-library-3239188-docs`](https://github.com/code-sena/test-manager-library-3239188-docs) | El spec: `spec-python/` y `spec-.net/` |
-| [`test-manager-library-3239188-api`](https://github.com/code-sena/test-manager-library-3239188-api) | Backend en PHP (Laravel) |
-| [`test-manager-library-3239188-app`](https://github.com/code-sena/test-manager-library-3239188-app) | Frontend en React |
-| [`test-manager-library-3239188-page`](https://github.com/code-sena/test-manager-library-3239188-page) | Sitio público estático de presentación |
-| [`test-manager-library-3239188-infra`](https://github.com/code-sena/test-manager-library-3239188-infra) | Contenedores, red, volúmenes y motor de base de datos vacío |
-| [`test-manager-library-3239188-tool`](https://github.com/code-sena/test-manager-library-3239188-tool) | Utilidades: sembrador de datos de demostración |
+| Diseño de pantallas y manejo de errores | Hecho (este documento) |
+| Implementación | Pendiente |
+
+> Este README describe el diseño previsto. No afirma que la implementación exista.
